@@ -1,0 +1,105 @@
+#parameters for datapipeline
+Mode: 'prediction'   # prediction, training
+dataPreprocessing: False
+
+# normalized_data_path: '/home/students/studborst1/data/NAKO_IQA_nifti/normalized_data_motion_detection_adapt_eq'
+# normalized_data_path: '/home/students/studborst1/data/normalized_data_motion_detection_adapt_eq_MRPhysics_NAKO'
+normalized_data_path: '/home/students/studborst1/data/MRPhysics_nifti/normalized_data_motion_detection_adapt_eq'
+
+SaveModel: '/home/students/studborst1/MotionDetection/RegionViT_UNet_MRPhysics_NAKO/training_results/checkpoints/01_10/'
+ModelName: '/RegionViT_UNet_MRPhysics_NAKO.pt'
+Wandb: 'RegionViT_UNet_MRPhysics_NAKO'
+Checkpoint: '/home/students/studborst1/MotionDetection/MotionDetection/training_results/checkpoints/regionvit_fpn/RegionViT_FPN_MRP.pth'
+CSV: 'RegionViT_FPN_MRP_test_metrics'
+
+
+PatchSize: [224,224]
+PatchOverlap_NAKO: 0.8
+PatchOverlap_MRP: 0.9
+
+# combined training of MRPhysics and NAKO-IQA
+#Database: ['NAKO_IQA', 'MRPhysics']   # MRPhysics, NAKO_IQA
+#SelectedPatient: ['Q8', 'Q16', '16_mj', '17_ks']  # give the selected patient for test dataset
+
+# MRPhysics only
+Database: ['MRPhysics']
+SelectedPatient: ['16_mj', '17_ks']  #give the selected patient for test dataset
+
+# NAKO-IQA only
+#Database: ['NAKO_IQA']
+#SelectedPatient: ['Q8', 'Q16']  # give the selected patient for test dataset
+
+# NAKO194
+#Database: ['NAKO194']
+#SelectedPatient: ['1', '100', '1550'] # 0-11681
+
+
+MRPhysics:
+# map extra meta information into datasets [path labels (if separate file), type of artifact, body region, contrast weighting, MAX_shape_x, MAX_shape_y, MAX_shape_z]
+  datasets:
+    t1_tse_tra_Kopf_0002: [None, 'ref', 'head', 't1', 192, 256, 40]
+    t1_tse_tra_Kopf_Motion_0003: [None, 'image', 'head', 't1', 192, 256, 40]
+    #t1_tse_tra_fs_mbh_Leber_0004: [None, 'ref', 'abdomen', 't1', 320, 256, 40]
+    #t1_tse_tra_fs_mbh_Leber_Motion_0005: [None, 'image', 'abdomen', 't1', 320, 256, 40]
+    #t2_tse_tra_fs_navi_Leber_0006: [None, 'ref', 'abdomen', 't2', 320, 256, 40]
+    #t1_tse_tra_fs_Becken_0008: [None, 'ref', 'pelvis', 't1', 320, 256, 40]
+    #t1_tse_tra_fs_Becken_Motion_0010: [None, 'image', 'pelvis', 't1', 320, 256, 40]
+    #################################
+    #t2_tse_tra_fs_Becken_0009: [None, 'ref', 'pelvis', 't2', 320, 256, 40]
+    #t2_tse_tra_fs_Becken_Motion_0011: [None, 'image', 'pelvis', 't2', 320, 256, 40]
+    # t2_tse_tra_fs_navi_Leber_Shim_xz_0007: [None, 'shim', 'abdomen', 't2', 320, 256, 40]
+    # t2_tse_tra_fs_Becken_Shim_xz_0012: [None, 'shim', 'pelvis', 't2', 320, 256, 40]
+    #t2_tse_tra_fs_Becken_BaseRes128: [None, 'ref', 'pelvis', 't2', 320, 256, 40]
+    #t2_tse_tra_fs_Becken_BaseRes192: [None, 'ref', 'pelvis', 't2', 320, 256, 40]
+    #t2_tse_tra_fs_Becken_BaseRes256: [None, 'ref', 'pelvis', 't2', 320, 256, 40]
+    #t2_tse_tra_fs_navi_Leber_BaseRes192: [None, 'ref', 'abdomen', 't2', 320, 256, 40]
+    #t2_tse_tra_fs_navi_Leber_BaseRes256: [None, 'ref', 'abdomen', 't2', 320, 256, 40]
+    #t2_tse_tra_Kopf: [None, 'ref', 'head', 't2', 320, 256, 40]
+    #t2_tse_tra_Kopf_ND: [None, 'ref', 'head', 't2', 320, 256, 40]
+    #t1_tse_tra_Kopf_BaseRes128: [None, 'ref', 'head', 't1', 320, 256, 40]
+    #t1_tse_tra_Kopf_BaseRes192: [None, 'ref', 'head', 't1', 320, 256, 40]
+    # t1_tse_tra_Kopf_Shim_xz: [None, 'shim', 'head', 't1', 320, 256, 40]
+    #t2_tse_tra_fs_navi_Leber_Motion_0013: [None, 'image', 'abdomen', 't2', 320, 256, 40]
+
+  path: '/home/students/studborst1/data/MRPhysics_nifti/raw'
+  subdir: ''
+
+
+NAKO_IQA:
+  datasets:
+    3D_GRE_TRA_bh_F_COMPOSED: [None, 'ref', 'wb', 't1', 384, 256, 144]
+    3D_GRE_TRA_fb_F_COMPOSED: [None, 'image', 'wb', 't1', 384, 256, 144]
+    3D_GRE_TRA_fb_deep_F_COMPOSED: [None, 'image', 'wb', 't1', 384, 256, 144]
+    3D_GRE_TRA_bh_W_COMPOSED: [None, 'ref', 'wb', 't1', 384, 256, 144]
+    3D_GRE_TRA_fb_W_COMPOSED: [None, 'image', 'wb', 't1', 384, 256, 144]
+    3D_GRE_TRA_fb_deep_W_COMPOSED: [None, 'image', 'wb', 't1', 384, 256, 144]
+  path: '/home/students/studborst1/data/NAKO_IQA_nifti'
+  subdir: 'dicom_sorted'
+
+
+NAKO194:
+  datasets:
+    3D_GRE_TRA_W_COMPOSED_FAT: [None, 'image', 'wb', 't1', 320, 260, 316]
+    3D_GRE_TRA_W_COMPOSED_WATER: [None, 'image', 'wb', 't1', 320, 260, 316]
+    #3D_GRE_TRA_W_COMPOSED_IN: [None, 'image', 'wb', 't1', 320, 260, 316]
+    #3D_GRE_TRA_W_COMPOSED_OOP: [None, 'image', 'wb', 't1', 320, 260, 316]
+  path: '/home/students/studborst1/data/NAKO_194_nifti'
+  subdir: ''
+  
+
+# parameters for training
+Model: 'RegionViT_FPN' # UNet, RegionViT_UNet, RegionViT_FPN, Swin_UNet
+Train_test_ratio: 0.1
+BatchSize: 64
+Epochs: 60
+Optimizer: 'AdamW' # AdamW, SGD
+LearningRate: 0.0001
+DivFactor: 100
+Classes: 2
+SEED: 42
+GPU: 2
+LossFunction: 'DiceCELoss' #DiceCELoss, DiceFocalLoss
+Normalized: 1
+Scheduler: 'OneCycle'
+Plotting: True
+Clip: 0.5
